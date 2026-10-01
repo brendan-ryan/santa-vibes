@@ -181,12 +181,14 @@ PushSubscription
   -- Web Push subscription from the browser; one per user/device
 
 Season
-  id, year (unique), budget (nullable), generated_at, reset_at (null until wiped)
+  id, year (unique), budget (nullable), is_test (boolean), generated_at, reset_at (null until wiped)
   -- budget is the global spending target for the season, set by admin
+  -- is_test: when true, pairing generation skips all exclusion rules; admin can wipe the season
 
 Pairing
   id, season_id → Season, giver_id → User, receiver_id → User
-  -- Preserved; algorithm excludes pairs from the 3 most recent prior seasons
+  -- Preserved for real seasons; test season pairings are deleted on wipe
+  -- Algorithm excludes pairs from the 3 most recent prior non-test seasons
 
 IneligiblePair  -- couples only; historical pairings are derived from the Pairing table
   id, user_a_id → User, user_b_id → User, reason (couple), created_at

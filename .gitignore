@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Prisma AI agent skill files
+.agents/
+.cursor/
+.devin/
+prisma.config.ts
+
 # dependencies
 /node_modules
 /.pnp
@@ -23,6 +29,7 @@
 # misc
 .DS_Store
 *.pem
+illegal_pairs.md
 
 # debug
 npm-debug.log*

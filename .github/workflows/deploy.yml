@@ -20,4 +20,4 @@ jobs:
             npm ci
             npx prisma migrate deploy
             npm run build
-            pm2 restart santa-vibes || pm2 start npm --name santa-vibes -- start
+            pm2 restart santa-vibes || pm2 start npm --name santa-vibes --cwd /var/www/santa-vibes -- start

@@ -100,6 +100,7 @@ model Season {
   id          String    @id @default(cuid())
   year        Int       @unique
   budget      Decimal?
+  isTest      Boolean   @default(false)
   generatedAt DateTime?
   resetAt     DateTime?
 
@@ -112,7 +113,7 @@ model Pairing {
   giverId    String
   receiverId String
 
-  season   Season @relation(fields: [seasonId], references: [id])
+  season   Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
   giver    User   @relation("giver", fields: [giverId], references: [id])
   receiver User   @relation("receiver", fields: [receiverId], references: [id])
 
@@ -168,7 +169,7 @@ model GiverSelection {
   status    SelectionStatus @default(PLANNING)
   createdAt DateTime        @default(now())
 
-  pairing Pairing      @relation(fields: [pairingId], references: [id])
+  pairing Pairing      @relation(fields: [pairingId], references: [id], onDelete: Cascade)
   item    WishlistItem @relation(fields: [itemId], references: [id])
 
   @@unique([pairingId, itemId])
@@ -183,5 +184,5 @@ model Message {
   sentAt     DateTime   @default(now())
   readAt     DateTime?
 
-  pairing Pairing @relation(fields: [pairingId], references: [id])
+  pairing Pairing @relation(fields: [pairingId], references: [id], onDelete: Cascade)
 }

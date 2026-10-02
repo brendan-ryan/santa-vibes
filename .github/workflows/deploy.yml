@@ -18,6 +18,7 @@ jobs:
             set -e
             cd /var/www/santa-vibes
             git pull origin main
+            rm -rf node_modules
             npm ci
             npx prisma migrate deploy
             npm run build

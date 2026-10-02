@@ -19,7 +19,6 @@ jobs:
             cd /var/www/santa-vibes
             git pull origin main
             pm2 stop santa-vibes || true
-            rm -rf node_modules
             npm ci
             npx prisma migrate deploy
             npm run build

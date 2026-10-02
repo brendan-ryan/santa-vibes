@@ -51,6 +51,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verifyRequest: "/login/verify",
   },
   callbacks: {
+    async signIn({ user }) {
+      // Reject any sign-in for an email not already in the DB (admin-created only)
+      const existing = await db.user.findUnique({ where: { email: user.email! } });
+      return !!existing;
+    },
     session({ session, user }) {
       if (user) {
         session.user.id = user.id;

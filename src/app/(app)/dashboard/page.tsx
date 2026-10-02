@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import NotificationBanner from "@/components/notification-banner";
 
 export const metadata = { title: "Home — Santa Vibes" };
 
@@ -52,6 +53,8 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-zinc-50">
       <div className="max-w-lg mx-auto px-4 py-8 space-y-4">
+        <NotificationBanner />
+
         {/* Greeting */}
         <div className="mb-2">
           <h1 className="text-2xl font-bold text-zinc-900">

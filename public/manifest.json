@@ -1,0 +1,17 @@
+{
+  "name": "Santa Vibes",
+  "short_name": "Santa Vibes",
+  "description": "Family Secret Santa manager",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b91c1c",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

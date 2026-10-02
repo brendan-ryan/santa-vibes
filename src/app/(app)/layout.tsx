@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import BottomNav from "@/components/bottom-nav";
+import PushProvider from "@/components/push-provider";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -35,6 +36,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="pb-16">
+      <PushProvider />
       {children}
       <BottomNav unreadCount={unreadCount} />
     </div>

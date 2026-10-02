@@ -11,11 +11,24 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "Santa Vibes",
   description: "Family Secret Santa manager",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Santa Vibes",
+  },
+};
+
+export const viewport = {
+  themeColor: "#b91c1c",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
+      <head>
+        <link rel="apple-touch-icon" href="/icon.svg" />
+      </head>
       <body className="min-h-full flex flex-col">
         <SessionProvider>{children}</SessionProvider>
       </body>

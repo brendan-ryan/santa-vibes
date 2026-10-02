@@ -7,7 +7,8 @@ export default auth((req) => {
 
   const isPublic =
     path.startsWith("/login") ||
-    path.startsWith("/api/auth");
+    path.startsWith("/api/auth") ||
+    path.startsWith("/api/push");
 
   if (!session && !isPublic) {
     return NextResponse.redirect(new URL("/login", req.url));

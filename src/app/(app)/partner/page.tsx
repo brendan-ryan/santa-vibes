@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import PartnerWishlist from "./partner-wishlist";
 
-export const metadata = { title: "Your Partner — Santa Vibes" };
+export const metadata = { title: "Your Partner — Secret Santa" };
 
 export default async function PartnerPage() {
   const session = await auth();

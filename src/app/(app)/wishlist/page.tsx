@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import WishlistView from "./wishlist-view";
 
-export const metadata = { title: "My Wishlist — Santa Vibes" };
+export const metadata = { title: "My Wishlist — Secret Santa" };
 
 export default async function WishlistPage() {
   const session = await auth();

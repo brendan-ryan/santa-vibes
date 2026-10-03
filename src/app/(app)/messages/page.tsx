@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import MessagesView from "./messages-view";
 
-export const metadata = { title: "Messages — Santa Vibes" };
+export const metadata = { title: "Messages — Secret Santa" };
 
 export default async function MessagesPage() {
   const session = await auth();

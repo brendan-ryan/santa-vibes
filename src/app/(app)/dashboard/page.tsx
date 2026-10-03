@@ -5,7 +5,7 @@ import Link from "next/link";
 import NotificationBanner from "@/components/notification-banner";
 import SignOutButton from "@/components/sign-out-button";
 
-export const metadata = { title: "Home — Santa Vibes" };
+export const metadata = { title: "Home — Secret Santa" };
 
 export default async function DashboardPage() {
   const session = await auth();

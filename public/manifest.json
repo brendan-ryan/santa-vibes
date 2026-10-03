@@ -1,6 +1,6 @@
 {
-  "name": "Santa Vibes",
-  "short_name": "Santa Vibes",
+  "name": "Secret Santa",
+  "short_name": "Secret Santa",
   "description": "Family Secret Santa manager",
   "start_url": "/dashboard",
   "display": "standalone",

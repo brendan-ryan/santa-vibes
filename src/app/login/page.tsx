@@ -50,7 +50,7 @@ export default function LoginPage() {
       <div className="max-w-sm w-full space-y-8">
         <div className="text-center">
           <div className="text-6xl mb-4">🎅</div>
-          <h1 className="text-3xl font-bold text-zinc-900">Santa Vibes</h1>
+          <h1 className="text-3xl font-bold text-zinc-900">Secret Santa</h1>
           <p className="mt-2 text-zinc-600">Sign in to manage your Secret Santa</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">

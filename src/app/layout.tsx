@@ -9,13 +9,13 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Santa Vibes",
+  title: "Secret Santa",
   description: "Family Secret Santa manager",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Santa Vibes",
+    title: "Secret Santa",
   },
 };
 

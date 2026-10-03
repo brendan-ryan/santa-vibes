@@ -1,4 +1,4 @@
-const CACHE = "santa-vibes-v1";
+const CACHE = "secret-santa-v1";
 const PRECACHE = ["/manifest.json", "/icon.svg"];
 
 self.addEventListener("install", (event) => {
@@ -44,7 +44,7 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener("push", (event) => {
   const data = event.data?.json() ?? {};
   event.waitUntil(
-    self.registration.showNotification(data.title ?? "Santa Vibes", {
+    self.registration.showNotification(data.title ?? "Secret Santa", {
       body: data.body ?? "You have a new message!",
       icon: "/icon.svg",
       badge: "/icon.svg",

@@ -57,7 +57,7 @@ export async function sendMessage(
     : null;
 
   sendPushToUser(counterpartyId, {
-    title: "Santa Vibes",
+    title: "Secret Santa",
     body: role === "GIVER"
       ? "Your Secret Santa sent you a message 🎅"
       : `${senderName} sent you a message 🎁`,

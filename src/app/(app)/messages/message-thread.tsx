@@ -164,7 +164,7 @@ export default function MessageThread({ pairingId, role, partnerName, messages }
               rows={1}
               maxLength={255}
               placeholder={`Message ${partnerName}…`}
-              className="w-full px-3 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent resize-none text-sm leading-relaxed"
+              className="w-full px-3 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent resize-none text-base leading-relaxed"
               style={{ minHeight: "42px", maxHeight: "120px" }}
             />
             {input.length > 200 && (

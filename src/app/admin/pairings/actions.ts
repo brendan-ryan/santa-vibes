@@ -95,7 +95,10 @@ export async function wipeTestSeason(seasonId: string) {
   if (!season?.isTest) return { error: "Only test seasons can be wiped." };
 
   await db.$transaction(async (tx) => {
+    // Pairings → messages + giver selections cascade automatically
     await tx.pairing.deleteMany({ where: { seasonId } });
+    // WishlistItems → wishlist images cascade automatically
+    await tx.wishlistItem.deleteMany({});
     await tx.season.update({
       where: { id: seasonId },
       data: { generatedAt: null, resetAt: new Date() },
@@ -103,5 +106,6 @@ export async function wipeTestSeason(seasonId: string) {
   });
 
   revalidatePath("/admin/pairings");
+  revalidatePath("/wishlist");
   return { success: true };
 }

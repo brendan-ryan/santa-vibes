@@ -28,6 +28,7 @@ export default function SeasonPanel({
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GenerateResult | null>(null);
   const [confirmRegenerate, setConfirmRegenerate] = useState(false);
+  const [confirmWipe, setConfirmWipe] = useState(false);
 
   async function handleCreate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -61,6 +62,7 @@ export default function SeasonPanel({
     setResult(null);
     await wipeTestSeason(season.id);
     setLoading(false);
+    setConfirmWipe(false);
     router.refresh();
   }
 
@@ -209,16 +211,42 @@ export default function SeasonPanel({
           </div>
         )}
 
-        {season.isTest && (
+        {season.isTest && !confirmWipe && (
           <button
-            onClick={() => {
-              if (confirm("Wipe all test pairings for this season?")) handleWipe();
-            }}
+            onClick={() => setConfirmWipe(true)}
             disabled={loading}
             className="px-4 py-2 border border-red-300 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50"
           >
-            Wipe Test Season
+            Wipe All Test Data
           </button>
+        )}
+
+        {season.isTest && confirmWipe && (
+          <div className="w-full rounded-lg bg-red-50 border border-red-200 px-4 py-3 space-y-3">
+            <p className="text-sm font-medium text-red-800">This will permanently delete:</p>
+            <ul className="text-sm text-red-700 space-y-0.5 list-disc list-inside">
+              <li>All pairings for this season</li>
+              <li>All messages between participants</li>
+              <li>All giver selections</li>
+              <li>All wishlist items and photos for every user</li>
+            </ul>
+            <p className="text-xs text-red-600">Only available because this is a test season. Cannot be undone.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmWipe(false)}
+                className="px-4 py-1.5 border border-zinc-300 text-zinc-700 text-sm rounded-lg hover:bg-zinc-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleWipe}
+                disabled={loading}
+                className="px-4 py-1.5 bg-red-700 text-white text-sm font-semibold rounded-lg hover:bg-red-800 disabled:opacity-50 transition-colors"
+              >
+                {loading ? "Wiping…" : "Yes, wipe everything"}
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

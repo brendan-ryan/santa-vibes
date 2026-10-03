@@ -182,7 +182,7 @@ export default function ItemForm({ item, onClose }: Props) {
                 type="url"
                 name="url"
                 defaultValue={item?.url ?? ""}
-                placeholder="https://amazon.com/…"
+                placeholder="https://bookshop.org/…"
                 className={inputClass}
               />
             </div>

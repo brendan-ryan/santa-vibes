@@ -55,7 +55,7 @@ function ChatIcon({ active }: { active: boolean }) {
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Home", Icon: HomeIcon },
   { href: "/wishlist", label: "Wishlist", Icon: GiftIcon },
-  { href: "/partner", label: "Partner", Icon: PersonIcon },
+  { href: "/partner", label: "Recipient", Icon: PersonIcon },
   { href: "/messages", label: "Messages", Icon: ChatIcon },
 ];
 

@@ -9,9 +9,15 @@ export default function VerifyPage() {
         <p className="text-zinc-600">
           A sign-in link has been sent to your email address. Click the link to sign in.
         </p>
-        <p className="text-sm text-zinc-500">
-          The link expires in 24 hours. Check your spam folder if you don&apos;t see it.
-        </p>
+        <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-left">
+          <p className="text-sm font-medium text-amber-800">Can&apos;t find the email?</p>
+          <p className="text-sm text-amber-700 mt-0.5">
+            Check your <span className="font-semibold">Junk</span> or{" "}
+            <span className="font-semibold">Spam</span> folder — magic link emails sometimes
+            land there on first delivery.
+          </p>
+        </div>
+        <p className="text-xs text-zinc-400">The link expires in 24 hours.</p>
         <Link href="/login" className="inline-block text-sm text-red-700 hover:underline">
           Back to sign in
         </Link>

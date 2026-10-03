@@ -47,6 +47,7 @@ export default async function PartnerPage() {
         url: true,
         price: true,
         priority: true,
+        images: { select: { storageUrl: true }, orderBy: { displayOrder: "asc" }, take: 1 },
       },
     }),
     db.giverSelection.findMany({
@@ -55,9 +56,10 @@ export default async function PartnerPage() {
     }),
   ]);
 
-  const items = wishlistItems.map((item) => ({
-    ...item,
-    price: item.price ? Number(item.price) : null,
+  const items = wishlistItems.map(({ images, price, ...rest }) => ({
+    ...rest,
+    price: price ? Number(price) : null,
+    imageUrl: images[0]?.storageUrl ?? null,
   }));
 
   const selectionMap = Object.fromEntries(selections.map((s) => [s.itemId, s]));

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createItem, updateItem } from "./actions";
 
 type WishlistItem = {
@@ -11,6 +12,7 @@ type WishlistItem = {
   url: string | null;
   price: number | null;
   priority: "HIGH" | "NORMAL" | "LOW";
+  imageUrl: string | null;
 };
 
 type Props = {
@@ -20,8 +22,33 @@ type Props = {
 
 export default function ItemForm({ item, onClose }: Props) {
   const router = useRouter();
+  const fileRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(item?.imageUrl ?? "");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError("");
+
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch("/api/wishlist/upload", { method: "POST", body: fd });
+    const json = await res.json();
+
+    if (!res.ok) {
+      setUploadError(json.error ?? "Upload failed");
+    } else {
+      setImageUrl(json.url);
+    }
+    setUploading(false);
+    // reset so the same file can be re-selected
+    e.target.value = "";
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -53,6 +80,9 @@ export default function ItemForm({ item, onClose }: Props) {
             {item ? "Edit item" : "Add wishlist item"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Hidden field carries the uploaded URL */}
+            <input type="hidden" name="imageUrl" value={imageUrl} />
+
             <div>
               <label className="block text-sm font-medium text-zinc-700 mb-1">
                 What do you want?
@@ -61,7 +91,7 @@ export default function ItemForm({ item, onClose }: Props) {
                 name="title"
                 defaultValue={item?.title}
                 required
-                placeholder="e.g. Lego Technic set, cozy robe, gift card…"
+                placeholder="e.g. cozy robe, Lego Technic set, warm blanket…"
                 className={inputClass}
               />
             </div>
@@ -78,6 +108,69 @@ export default function ItemForm({ item, onClose }: Props) {
                 placeholder="Specific details, size, colour, model number…"
                 className={`${inputClass} resize-none`}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-1">
+                Photo{" "}
+                <span className="text-zinc-400 font-normal">(optional)</span>
+              </label>
+
+              {imageUrl ? (
+                <div className="relative rounded-lg overflow-hidden border border-zinc-200 bg-zinc-50">
+                  <Image
+                    src={imageUrl}
+                    alt="Preview"
+                    width={400}
+                    height={160}
+                    className="w-full h-40 object-cover"
+                    unoptimized
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setImageUrl("")}
+                    className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+                    aria-label="Remove photo"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                      <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  disabled={uploading}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-dashed border-zinc-300 text-sm text-zinc-500 hover:border-zinc-400 hover:text-zinc-700 disabled:opacity-50 transition-colors"
+                >
+                  {uploading ? (
+                    <>
+                      <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
+                        <path d="M4 12a8 8 0 0 1 8-8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-75" />
+                      </svg>
+                      Uploading…
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                        <path d="M8 3v8M4 7l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                      Add a photo
+                    </>
+                  )}
+                </button>
+              )}
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                className="hidden"
+                onChange={handleFile}
+              />
+              {uploadError && <p className="text-xs text-red-600 mt-1">{uploadError}</p>}
             </div>
 
             <div>
@@ -145,7 +238,7 @@ export default function ItemForm({ item, onClose }: Props) {
               </button>
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || uploading}
                 className="flex-1 py-2 rounded-lg bg-red-700 text-white font-medium hover:bg-red-800 disabled:opacity-50 transition-colors"
               >
                 {loading ? "Saving…" : item ? "Save changes" : "Add item"}

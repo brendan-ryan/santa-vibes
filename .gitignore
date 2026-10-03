@@ -29,6 +29,10 @@ prisma.config.ts
 # misc
 .DS_Store
 *.pem
+
+# user uploads
+/public/uploads/*
+!/public/uploads/.gitkeep
 illegal_pairs.md
 
 # debug

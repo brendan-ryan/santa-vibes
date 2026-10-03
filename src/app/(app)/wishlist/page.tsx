@@ -20,12 +20,14 @@ export default async function WishlistPage() {
       price: true,
       priority: true,
       displayOrder: true,
+      images: { select: { storageUrl: true }, orderBy: { displayOrder: "asc" }, take: 1 },
     },
   });
 
-  const itemsForClient = items.map((item) => ({
-    ...item,
-    price: item.price ? Number(item.price) : null,
+  const itemsForClient = items.map(({ images, price, ...rest }) => ({
+    ...rest,
+    price: price ? Number(price) : null,
+    imageUrl: images[0]?.storageUrl ?? null,
   }));
 
   return <WishlistView items={itemsForClient} />;

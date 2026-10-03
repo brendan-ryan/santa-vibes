@@ -65,6 +65,15 @@ export default function MessagesView({ threads }: { threads: Thread[] }) {
             </p>
           </div>
         )}
+
+        <div className="mt-2 flex items-center gap-1.5">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-zinc-400 flex-shrink-0" aria-hidden>
+            <path d="M6 1a3 3 0 0 0-3 3v1H2.5A.5.5 0 0 0 2 5.5v5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5H9V4a3 3 0 0 0-3-3zm-2 3a2 2 0 0 1 4 0v1H4V4z" fill="currentColor" />
+          </svg>
+          <p className="text-xs text-zinc-400">
+            Messages are anonymous — your person only sees &ldquo;Your Secret Santa&rdquo;
+          </p>
+        </div>
       </div>
 
       {/* Thread */}

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import ItemForm from "./item-form";
 import { deleteItem, moveItem } from "./actions";
 
@@ -13,12 +14,13 @@ type WishlistItem = {
   price: number | null;
   priority: "HIGH" | "NORMAL" | "LOW";
   displayOrder: number;
+  imageUrl: string | null;
 };
 
 const priorityConfig = {
   HIGH: { label: "High priority", className: "bg-red-100 text-red-700" },
-  NORMAL: null,
-  LOW: { label: "Nice to have", className: "bg-zinc-100 text-zinc-500" },
+  NORMAL: { label: "On my list", className: "bg-zinc-100 text-zinc-500" },
+  LOW: { label: "Nice to have", className: "bg-zinc-100 text-zinc-400" },
 };
 
 export default function WishlistView({ items }: { items: WishlistItem[] }) {
@@ -123,6 +125,20 @@ export default function WishlistView({ items }: { items: WishlistItem[] }) {
                     </span>
                   )}
                 </div>
+
+                {/* Photo */}
+                {item.imageUrl && (
+                  <div className="mb-2 rounded-lg overflow-hidden border border-zinc-100">
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.title}
+                      width={400}
+                      height={160}
+                      className="w-full h-40 object-cover"
+                      unoptimized
+                    />
+                  </div>
+                )}
 
                 {/* Description */}
                 {item.description && (

@@ -40,8 +40,9 @@ export async function createItem(
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
   const count = await db.wishlistItem.count({ where: { userId: user.id } });
+  const imageUrl = (formData.get("imageUrl") as string) || null;
 
-  await db.wishlistItem.create({
+  const item = await db.wishlistItem.create({
     data: {
       userId: user.id,
       title: parsed.data.title,
@@ -52,6 +53,10 @@ export async function createItem(
       displayOrder: count,
     },
   });
+
+  if (imageUrl) {
+    await db.wishlistImage.create({ data: { itemId: item.id, storageUrl: imageUrl } });
+  }
 
   revalidatePath("/wishlist");
   return { success: true };
@@ -75,6 +80,8 @@ export async function updateItem(
   });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
+  const imageUrl = formData.get("imageUrl") as string;
+
   await db.wishlistItem.update({
     where: { id },
     data: {
@@ -85,6 +92,12 @@ export async function updateItem(
       priority: parsed.data.priority,
     },
   });
+
+  // Replace image: any value replaces existing, empty string removes
+  await db.wishlistImage.deleteMany({ where: { itemId: id } });
+  if (imageUrl) {
+    await db.wishlistImage.create({ data: { itemId: id, storageUrl: imageUrl } });
+  }
 
   revalidatePath("/wishlist");
   return { success: true };

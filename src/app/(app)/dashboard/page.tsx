@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import NotificationBanner from "@/components/notification-banner";
+import SignOutButton from "@/components/sign-out-button";
 
 export const metadata = { title: "Home — Santa Vibes" };
 
@@ -14,12 +15,16 @@ export default async function DashboardPage() {
   const userId = session.user.id;
   const isAdmin = session.user.role === "ADMIN";
 
-  const [season, wishlistCount] = await Promise.all([
+  const [season, wishlistCount, currentUser] = await Promise.all([
     db.season.findUnique({
       where: { year },
       select: { id: true, budget: true, isTest: true, generatedAt: true },
     }),
     db.wishlistItem.count({ where: { userId } }),
+    db.user.findUnique({
+      where: { id: userId },
+      select: { name: true, displayName: true, email: true },
+    }),
   ]);
 
   let partnerName: string | null = null;
@@ -48,7 +53,11 @@ export default async function DashboardPage() {
     unreadCount = unread;
   }
 
-  const displayName = session.user.name ?? session.user.email ?? "there";
+  const displayName =
+    currentUser?.displayName ??
+    currentUser?.name?.split(" ")[0] ??
+    currentUser?.email ??
+    "there";
 
   return (
     <div className="min-h-screen bg-zinc-50">
@@ -143,6 +152,12 @@ export default async function DashboardPage() {
             showArrow
           />
         )}
+
+        {/* Account footer */}
+        <div className="flex items-center justify-between pt-2 pb-2">
+          <p className="text-xs text-zinc-400 truncate">{currentUser?.email}</p>
+          <SignOutButton />
+        </div>
       </div>
     </div>
   );

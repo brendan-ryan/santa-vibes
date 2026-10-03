@@ -60,9 +60,10 @@ export default function MessageThread({ pairingId, role, partnerName, messages }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
 
-  // Mark incoming messages as read on mount
+  // Mark incoming messages as read on mount, then refresh so the layout
+  // re-fetches unreadCount and the nav badge clears on next navigation
   useEffect(() => {
-    markMessagesRead(pairingId);
+    markMessagesRead(pairingId).then(() => startTransition(() => router.refresh()));
   }, [pairingId]);
 
   async function handleSend(body: string, isCanned = false) {

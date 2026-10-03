@@ -77,7 +77,7 @@ export default function BottomNav({ unreadCount }: { unreadCount: number }) {
             >
               <div className="relative">
                 <Icon active={isActive} />
-                {href === "/messages" && unreadCount > 0 && (
+                {href === "/messages" && unreadCount > 0 && !pathname.startsWith("/messages") && (
                   <span className="absolute -top-1 -right-1.5 min-w-[16px] h-4 bg-red-700 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </span>

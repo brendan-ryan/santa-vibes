@@ -21,6 +21,7 @@ function emailHtml(url: string) {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
+  trustHost: true,
   providers: [
     Resend({
       from: process.env.RESEND_FROM_EMAIL ?? "noreply@example.com",

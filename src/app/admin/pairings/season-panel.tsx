@@ -29,6 +29,7 @@ export default function SeasonPanel({
   const [result, setResult] = useState<GenerateResult | null>(null);
   const [confirmRegenerate, setConfirmRegenerate] = useState(false);
   const [confirmWipe, setConfirmWipe] = useState(false);
+  const [respectExclusions, setRespectExclusions] = useState(false);
 
   async function handleCreate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,7 +46,7 @@ export default function SeasonPanel({
     if (!season) return;
     setLoading(true);
     setResult(null);
-    const r = await runGeneratePairings(season.id);
+    const r = await runGeneratePairings(season.id, respectExclusions);
     if ("error" in r) {
       setResult({ type: "error", message: r.error });
     } else {
@@ -168,6 +169,21 @@ export default function SeasonPanel({
 
       {/* Actions */}
       <div className="flex flex-wrap gap-3">
+        {season.isTest && !isGenerated && (
+          <label className="w-full flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={respectExclusions}
+              onChange={(e) => setRespectExclusions(e.target.checked)}
+              className="w-4 h-4 accent-red-700"
+            />
+            <div>
+              <span className="text-sm font-medium text-zinc-700">Apply couple exclusions</span>
+              <p className="text-xs text-zinc-500">Test whether your exclusion rules produce valid pairings.</p>
+            </div>
+          </label>
+        )}
+
         {!isGenerated && (
           <button
             onClick={handleGenerate}
